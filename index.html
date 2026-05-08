@@ -7,11 +7,18 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700&display=swap');
         body { font-family: 'Lexend', sans-serif; background-color: #f8fafc; }
+        
         .active-menu { background: #dc2626 !important; color: white !important; font-weight: 700; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2); }
+        
         .sidebar { background-color: #0f172a; transition: all 0.3s ease; }
+
     </style>
 </head>
 <body class="text-slate-800">
@@ -26,13 +33,13 @@
             <div class="p-8 space-y-5">
                 <div>
                     <label class="text-xs font-bold text-slate-500 uppercase ml-1">Tên đăng nhập</label>
-                    <input type="text" id="u" class="w-full mt-1 p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-red-500 transition">
+                    <input type="text" id="u" class="w-full mt-1 p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-red-500 transition" placeholder="Nhập tên đăng nhập">
                 </div>
 
                 <div>
                 <label class="text-xs font-bold text-slate-500 uppercase ml-1">Mật khẩu</label>
                 <div class="relative">
-                    <input type="password" id="p" class="w-full mt-1 p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-red-500 transition pr-12">
+                    <input type="password" id="p" class="w-full mt-1 p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-red-500 transition pr-12" placeholder="Nhập mật khẩu">
                     <!-- Biểu tượng con mắt -->
                     <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-red-500 transition">
                         <i id="eye-icon" class="fas fa-eye"></i>
@@ -40,19 +47,23 @@
                     </div>
                 </div>
 
-
-                <!--
-                <div>
-                    <label class="text-xs font-bold text-slate-500 uppercase ml-1">Mật khẩu</label>
-                    <input type="password" id="p" class="w-full mt-1 p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-red-500 transition">
-                    <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-red-500 transition">
-                    <i id="eye-icon" class="fas fa-eye"></i>
-                    </button>
-                </div>
-
-                -->
-                <button onclick="doLogin()" class="w-full bg-red-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-red-700 shadow-lg shadow-red-200 transition-all active:scale-95">ĐĂNG NHẬP</button>
+                <button onclick="doLogin()" class="w-full bg-red-600 text-white py-3 rounded-xl font-bold text-lg hover:bg-red-700 shadow-lg shadow-red-200 transition-all active:scale-95">ĐĂNG NHẬP</button>
             </div>
+
+            <div class="text-center mt-4">
+                <p class="text-slate-500 text-sm">Chưa có tài khoản? 
+                    <button onclick="openRegister()" class="text-red-600 font-bold hover:underline">Đăng ký ngay</button>
+                </p>
+            </div>
+
+            <div class="guide-box d-flex flex-column align-items-center text-center">
+              <span class="guide-title"><i class="bi bi-lightbulb"></i> Hướng dẫn đăng nhập:</span>
+              
+              <p class="mb-3"><b>Tên đăng nhập:</b> Họ tên viết liền không dấu (Ví dụ: lethanhloi)</p>
+               <p class="mb-1"><b>Mật khẩu:</b> Ngày sinh + Họ tên viết tắt (Ví dụ: 15032010ltl)</p>
+              <small class="d-block mt-2">* Viết liền, không khoảng cách, không dấu.</small>
+            </div>
+
         </div>
     </div>
 
@@ -95,7 +106,7 @@
                 <button onclick="changePass()" class="w-full text-left p-4 rounded-xl text-yellow-500 hover:bg-yellow-500/10 transition flex items-center">
                     <i class="fas fa-key w-8"></i> ĐỔI MẬT KHẨU
                 </button>
-                <button onclick="location.reload()" class="w-full text-left p-4 rounded-xl text-red-400 hover:bg-red-400/10 transition flex items-center">
+                <button onclick="localStorage.removeItem('mv_user_data'); location.reload();" class="w-full text-left p-4 rounded-xl text-red-400 hover:bg-red-400/10 transition flex items-center">
                     <i class="fas fa-sign-out-alt w-8"></i> ĐĂNG XUẤT
                 </button>
             </div>
@@ -111,8 +122,22 @@
 
     <script>
         // QUAN TRỌNG: Thay URL dưới đây bằng URL Web App của bạn[cite: 1]
-        const API = "https://script.google.com/macros/s/AKfycbwk-b3tdrJXX4JFYbfmi5Le8lB9MFhabXmaUDEhf4Mq0_9_LXULr4Mi1mU9k7xkx_NU/exec";
+        const API = "https://script.google.com/macros/s/AKfycbxzZzOV2f8E66ZGspfnda1iUmU2lnGayFErQ3euZvdZwo3Hu1vUJA771OpvFR2MnDuT/exec";
         let USER = { id: '', name: '', role: '' };
+
+        // --- THÊM VÀO ĐÂY: Tự động đăng nhập nếu có dữ liệu lưu trong máy ---
+        window.onload = function() {
+            const savedUser = localStorage.getItem('mv_user_data');
+            if (savedUser) {
+                USER = JSON.parse(savedUser);
+                document.getElementById('login-box').classList.add('hidden');
+                document.getElementById('main-app').classList.remove('hidden');
+                document.getElementById('user-fullname').innerText = USER.name;
+                document.getElementById('user-role').innerText = USER.role;
+                load('LICHHOC');
+            }
+        };
+
 
         function togglePassword() {
             const passwordInput = document.getElementById('p');
@@ -131,6 +156,12 @@
             }
         }
         
+/*
+        function handleLogin(event) {
+            event.preventDefault(); // Chặn load lại trang
+            doLogin();
+        }
+*/
         async function doLogin() {
             const user = document.getElementById('u').value.trim();
             const pass = document.getElementById('p').value;
@@ -142,12 +173,17 @@
             
             if(res.status === 'success') {
                 USER = { id: res.user, name: res.fullname, role: res.role };
+                
+                // --- THÊM DÒNG NÀY ĐỂ LƯU ---
+                localStorage.setItem('mv_user_data', JSON.stringify(USER));
+                
                 document.getElementById('login-box').classList.add('hidden');
                 document.getElementById('main-app').classList.remove('hidden');
                 document.getElementById('user-fullname').innerText = USER.name;
                 document.getElementById('user-role').innerText = USER.role;
                 load('LICHHOC');
                 Swal.close();
+
             } else {
                 Swal.fire("Lỗi", res.msg, "error");
             }
@@ -193,7 +229,7 @@
                         </p>
                     </div>
                     ${sheet === 'DON' ? `
-                        <button onclick="openFormDon()" class="whitespace-nowrap w-full md:w-auto bg-red-600 text-white px-6 py-3 rounded-2xl font-bold hover:bg-red-700 shadow-lg transition-all active:scale-95">
+                        <button onclick="sendDon()" class="whitespace-nowrap w-full md:w-auto bg-red-600 text-white px-6 py-3 rounded-2xl font-bold hover:bg-red-700 shadow-lg transition-all active:scale-95">
                             <i class="fas fa-plus mr-2"></i>GỬI ĐƠN MỚI
                         </button>` : ''}
                 </div>`;
@@ -341,18 +377,56 @@
 
         async function sendDon() {
             const { value: formValues } = await Swal.fire({
-                title: 'Gửi đơn nghỉ phép',
-                html: `<select id="sw-type" class="swal2-input"><option>Nghỉ phép học tập</option><option>Xin thi lên đai</option><option>Xin khác...</option></select>
-                       <textarea id="sw-reason" class="swal2-input" style="height:100px" placeholder="Nhập lý do vào đây"></textarea>`,
+                title: 'GỬI ĐƠN MỚI',
+                html: `
+                    <div class="text-left">
+                        <label class="text-xs font-bold text-slate-500 uppercase">Loại đơn</label>
+                        <select id="sw-type" class="swal2-input w-full">
+                            <option value="Nghỉ phép học tập">Nghỉ phép học tập</option>
+                            <option value="Xin thi lên đai">Xin thi lên đai</option>
+                            <option value="Xin khác...">Xin khác...</option>
+                        </select>
+                        <label class="text-xs font-bold text-slate-500 uppercase mt-4 block">Lý do chi tiết</label>
+                        <textarea id="sw-reason" class="swal2-input w-full" style="height:120px" placeholder="Nhập lý do cụ thể vào đây..."></textarea>
+                    </div>`,
                 focusConfirm: false,
                 confirmButtonText: 'GỬI ĐƠN NGAY',
-                preConfirm: () => { return { type: document.getElementById('sw-type').value, reason: document.getElementById('sw-reason').value } }
+                showCancelButton: true,
+                cancelButtonText: 'HỦY',
+                preConfirm: () => {
+                    const type = document.getElementById('sw-type').value;
+                    const reason = document.getElementById('sw-reason').value.trim();
+                    if (!reason) {
+                        Swal.showValidationMessage('Vui lòng nhập lý do');
+                    }
+                    return { type: type, reason: reason };
+                }
             });
 
             if (formValues) {
-                const res = await fetch(API, { method: 'POST', body: JSON.stringify({ action: 'submitDon', data: { user: USER.id, ...formValues } }) }).then(r => r.json());
-                Swal.fire("Thành công", res.msg, "success");
-                load('DON');
+                Swal.showLoading();
+                try {
+                    const res = await fetch(API, { 
+                        method: 'POST', 
+                        body: JSON.stringify({ 
+                            action: 'submitDon', 
+                            data: { 
+                                user: USER.id, 
+                                loaiDon: formValues.type,   // Khóa gửi đi: loaiDon
+                                lyDo: formValues.reason     // Khóa gửi đi: lyDo
+                            } 
+                        }) 
+                    }).then(r => r.json());
+
+                    if (res.status === 'success') {
+                        Swal.fire("Thành công", "Đơn của bạn đã được gửi hệ thống", "success");
+                        load('DON'); // Tải lại bảng để thấy đơn mới
+                    } else {
+                        Swal.fire("Lỗi", res.msg || "Không thể gửi đơn", "error");
+                    }
+                } catch (error) {
+                    Swal.fire("Lỗi kết nối", "Vui lòng kiểm tra mạng", "error");
+                }
             }
         }
 
@@ -540,6 +614,55 @@ async function loadDonDangKy() {
     }).submitFormDon(formData);
   });
 
+//HÀM ĐĂNG KÝ TÀI KHOẢN
+async function openRegister() {
+    const { value: formValues } = await Swal.fire({
+        title: 'ĐĂNG KÝ TÀI KHOẢN',
+        html: `
+            <div class="text-left space-y-3">
+                <div>
+                    <label class="text-xs font-bold text-slate-500 uppercase">Họ và tên</label>
+                    <input id="reg-name" class="swal2-input w-full" placeholder="Nhập họ và tên viết in hoa">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-500 uppercase">Tên đăng nhập (Họ và tên viết liền không dấu)</label>
+                    <input id="reg-user" class="swal2-input w-full" placeholder="nguyenvana">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-500 uppercase">Mật khẩu</label>
+                    <input type="password" id="reg-pass" class="swal2-input w-full" placeholder="Nhập mật khẩu">
+                </div>
+            </div>`,
+        focusConfirm: false,
+        confirmButtonText: 'TẠO TÀI KHOẢN',
+        showCancelButton: true,
+        cancelButtonText: 'HỦY',
+        preConfirm: () => {
+            const name = document.getElementById('reg-name').value.trim();
+            const user = document.getElementById('reg-user').value.trim().toLowerCase();
+            const pass = document.getElementById('reg-pass').value;
+
+            if (!name || !user || !pass) {
+                Swal.showValidationMessage('Vui lòng nhập đầy đủ thông tin');
+            }
+            return { name, user, pass };
+        }
+    });
+
+    if (formValues) {
+        Swal.showLoading();
+        const res = await fetch(API, { 
+            method: 'POST', 
+            body: JSON.stringify({ action: 'register', data: formValues }) 
+        }).then(r => r.json());
+
+        if (res.status === 'success') {
+            Swal.fire("Thành công", "Tài khoản đã được tạo. Bạn có thể đăng nhập ngay!", "success");
+        } else {
+            Swal.fire("Lỗi", res.msg, "error");
+        }
+    }
+}
     </script>
 </body>
 </html>
